@@ -1,24 +1,34 @@
+from datetime import datetime
 from pydantic import BaseModel
 
 
-class ItemBase(BaseModel):
-    title: str
-    description: str | None = None
+class ScoreBase(BaseModel):
+    folder: str
+    filename: str
+    score: float
+    combo: int
+    judge_0: int
+    judge_1: int
+    judge_2: int
+    judge_3: int
+    judge_4: int
 
 
-class ItemCreate(ItemBase):
+class ScoreCreate(ScoreBase):
     pass
 
 
-class Item(ItemBase):
+class Score(ScoreBase):
     id: int
-    owner_id: int
+    player_id: int
+    submitted_on: datetime
 
     class Config:
         orm_mode = True
 
 
 class UserBase(BaseModel):
+    screen_name: str
     email: str
 
 
@@ -28,8 +38,22 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
-    is_active: bool
-    items: list[Item] = []
+    is_active: bool = True
+    hashed_password: str
+    rank: int
+    performance_point: int
+    self_introduction: str
+
+    scores: list[Score] = []
 
     class Config:
         orm_mode = True
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    screen_name: str

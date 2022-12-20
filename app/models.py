@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Float, DateTime
 from sqlalchemy.orm import relationship
 
 from database import Base
@@ -8,19 +8,35 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
+    screen_name = Column(String, unique=True, index=True)
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
 
-    items = relationship("Item", back_populates="owner")
+    self_introduction = Column(String, default="")
+
+    rank = Column(Integer, default=0)
+    performance_point = Column(Integer, default=0)
+
+    scores = relationship("Score", back_populates="player")
 
 
-class Item(Base):
-    __tablename__ = "items"
+class Score(Base):
+    __tablename__ = "scores"
 
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, index=True)
-    description = Column(String, index=True)
-    owner_id = Column(Integer, ForeignKey("users.id"))
+    folder = Column(String, index=True)
+    filename = Column(String, index=True)
+    score = Column(Float)
+    combo = Column(Integer)
+    judge_0 = Column(Integer)
+    judge_1 = Column(Integer)
+    judge_2 = Column(Integer)
+    judge_3 = Column(Integer)
+    judge_4 = Column(Integer)
 
-    owner = relationship("User", back_populates="items")
+    submitted_on = Column(DateTime)
+
+    player_id = Column(Integer, ForeignKey("users.id"))
+
+    player = relationship("User", back_populates="scores")
