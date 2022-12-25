@@ -27,24 +27,34 @@ class Score(ScoreBase):
         orm_mode = True
 
 
-class UserBase(BaseModel):
+class UserCreate(BaseModel):
     screen_name: str
+    password: str
     email: str
 
 
-class UserCreate(UserBase):
-    password: str
-
-
-class User(UserBase):
+class User(BaseModel):
     id: int
-    is_active: bool = True
-    hashed_password: str
+    screen_name: str
+    is_active: bool
     rank: int
     performance_point: int
     self_introduction: str
 
+    class Config:
+        orm_mode = True
+
+
+class UserScore(User):
     scores: list[Score] = []
+
+    class Config:
+        orm_mode = True
+
+
+class UserDB(User):
+    hashed_password: str
+    email: str
 
     class Config:
         orm_mode = True
