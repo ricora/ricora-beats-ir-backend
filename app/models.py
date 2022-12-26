@@ -27,6 +27,7 @@ class Score(Base):
     id = Column(Integer, primary_key=True, index=True)
     folder = Column(String, index=True)
     filename = Column(String, index=True)
+    level = Column(Integer, default=0)
     score = Column(Float)
     combo = Column(Integer)
     judge_0 = Column(Integer)
@@ -36,6 +37,7 @@ class Score(Base):
     judge_4 = Column(Integer)
 
     submitted_on = Column(DateTime)
+    performance_point = Column(Integer, default=0)
 
     player_id = Column(Integer, ForeignKey("users.id"))
 

@@ -5,6 +5,7 @@ from pydantic import BaseModel
 class ScoreBase(BaseModel):
     folder: str
     filename: str
+    level: int
     score: float
     combo: int
     judge_0: int
@@ -22,6 +23,7 @@ class Score(ScoreBase):
     id: int
     player_id: int
     submitted_on: datetime
+    performance_point: int
 
     class Config:
         orm_mode = True
