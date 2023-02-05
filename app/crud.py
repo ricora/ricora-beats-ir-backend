@@ -1,5 +1,5 @@
-from datetime import datetime
-
+from datetime import datetime, timezone, timedelta
+import sqlalchemy
 from sqlalchemy.orm import Session
 
 import models, schemas
@@ -53,7 +53,7 @@ def create_score(db: Session, score: schemas.ScoreCreate, player_id: int):
     db_score = models.Score(
         **score.dict(),
         player_id=player_id,
-        submitted_on=datetime.now(),
+        submitted_on=datetime.now(timezone(timedelta(hours=0)))+timedelta(hours=9),
         performance_point=performance.calculate(score=score.score, level=score.level)
     )
     db.add(db_score)
@@ -71,7 +71,7 @@ def update_score(db: Session, score: schemas.ScoreCreate, player_id: int):
         .first()
     )
     assert db_score is not None
-    db_score.submitted_on = datetime.now()
+    db_score.submitted_on = datetime.now(timezone(timedelta(hours=0)))+timedelta(hours=9)
     db_score.performance_point = performance.calculate(score=score.score, level=score.level)
 
     for key, value in score.dict().items():
