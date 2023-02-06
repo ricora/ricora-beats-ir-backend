@@ -19,7 +19,7 @@ def get_user_by_screen_name(db: Session, screen_name: str):
     return db.execute(sqlalchemy.select(models.User).filter(models.User.screen_name == screen_name)).scalars().first()
 
 
-def get_users(db: Session, skip: int = 0, limit: int = 100):
+def get_users(db: Session, skip: int = 0, limit: int = 100000):
     return db.execute(sqlalchemy.select(models.User).offset(skip).limit(limit)).scalars().all()
 
 
